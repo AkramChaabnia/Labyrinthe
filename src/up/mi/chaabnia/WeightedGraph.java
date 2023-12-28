@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class WeightedGraph {
 
+
+    
     // Classe interne pour représenter une arête pondérée
     static class Edge {
         int source; // Sommet source
