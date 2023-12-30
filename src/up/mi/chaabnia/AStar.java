@@ -22,10 +22,11 @@ public class AStar {
 
     public Etat resoudre(boolean utiliserHeuristique1) {
         PriorityQueue<Etat> file = new PriorityQueue<>((etat1, etat2) -> Integer.compare(etat1.cout, etat2.cout));
-        file.add(etats.get(String.format("(%d,%d,%d)", 0, 0, 0)));
+        file.add(etats.get(sortie.toString())); // Add the exit state to the queue
 
         while (!file.isEmpty()) {
             Etat etat = file.poll();
+
             System.out.println("Current state: " + etat); // Log current state
 
             if (etat.x == sortie.x && etat.y == sortie.y) {
@@ -41,7 +42,6 @@ public class AStar {
                 int m = labyrinthe[0].length;
 
                 if (x >= 0 && x < n && y >= 0 && y < m && labyrinthe[x][y] != Labyrinthe.MUR) {
-
                     Etat nouvel_etat = new Etat(x, y, etat.temps + 1, direction);
                     nouvel_etat.direction = direction; // Ajout de la direction
                     nouvel_etat.pere = etat;
@@ -54,12 +54,13 @@ public class AStar {
 
                     etats.put(nouvel_etat.toString(), nouvel_etat);
                     file.add(nouvel_etat);
+
                     System.out.println("Adding new state to queue: " + nouvel_etat); // Log when a new state is added to
                                                                                      // the queue
-
                 }
             }
         }
+
         System.out.println("No solution found"); // Log when no solution is found
         return null;
     }
