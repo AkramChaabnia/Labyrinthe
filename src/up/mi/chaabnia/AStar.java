@@ -13,15 +13,6 @@ public class AStar {
     private Etat sortie;
 
     public AStar(Map<String, Etat> etats, Heuristique heuristique1, Heuristique heuristique2, char[][] labyrinthe,
-            Etat sortie) {
-        this.etats = etats;
-        this.heuristique1 = heuristique1;
-        this.heuristique2 = heuristique2;
-        this.labyrinthe = labyrinthe;
-        this.sortie = sortie;
-    }
-
-    public AStar(Map<String, Etat> etats, Heuristique heuristique1, Heuristique heuristique2, char[][] labyrinthe,
             Etat initial, Etat sortie) {
         this.etats = etats;
         this.heuristique1 = heuristique1;
@@ -53,6 +44,11 @@ public class AStar {
                 int m = labyrinthe[0].length;
 
                 if (x >= 0 && x < n && y >= 0 && y < m && labyrinthe[x][y] != Labyrinthe.MUR) {
+                    // Don't move back to the parent state
+                    if (etat.pere != null && etat.pere.x == x && etat.pere.y == y) {
+                        continue;
+                    }
+
                     Etat nouvel_etat = new Etat(x, y, etat.temps + 1, direction);
                     nouvel_etat.direction = direction; // Ajout de la direction
                     nouvel_etat.pere = etat;
@@ -63,11 +59,16 @@ public class AStar {
                         nouvel_etat.cout = etat.cout + heuristique2.evaluer(nouvel_etat);
                     }
 
-                    etats.put(nouvel_etat.toString(), nouvel_etat);
-                    file.add(nouvel_etat);
+                    String nouvel_etat_key = nouvel_etat.toString();
+                    if (!etats.containsKey(nouvel_etat_key) || etats.get(nouvel_etat_key).cout > nouvel_etat.cout) {
+                        // Only add the new state to the queue if it hasn't been visited before,
+                        // or if the new state has a lower cost than the previously visited state.
+                        etats.put(nouvel_etat_key, nouvel_etat);
+                        file.add(nouvel_etat);
 
-                    System.out.println("Adding new state to queue: " + nouvel_etat); // Log when a new state is added to
-                                                                                     // the queue
+                        System.out.println("Adding new state to queue: " + nouvel_etat); // Log when a new state is
+                                                                                         // added to the queue
+                    }
                 }
             }
         }
