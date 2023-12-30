@@ -1,61 +1,67 @@
 package up.mi.chaabnia;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        // runTests();
         Scanner scanner = new Scanner(System.in);
+        FileManager fileManager = new FileManager();
+        char[][] labyrinthe;
+        int n, m;
 
-        // Lire les dimensions du labyrinthe
-        System.out.println("Entrez le nombre de lignes du labyrinthe : ");
-        int n = scanner.nextInt();
+        System.out.println("Do you want to enter the maze manually or read from a file? (1 - Manual, 2 - File)");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // consume newline
 
-        System.out.println("Entrez le nombre de colonnes du labyrinthe : ");
-        int m = scanner.nextInt();
+        try {
+            if (choice == 1) {
+                System.out.println("Enter the number of rows of the maze: ");
+                n = scanner.nextInt();
+                System.out.println("Enter the number of columns of the maze: ");
+                m = scanner.nextInt();
+                scanner.nextLine(); // consume newline
 
-        // Lire le labyrinthe
-        System.out.println(
-                "Entrez le labyrinthe (utilisez '#' pour les murs, 'D' pour le prisonnier, 'S' pour la sortie) : ");
-        char[][] labyrinthe = new char[n][m];
-
-        for (int i = 0; i < n; i++) {
-            String row = scanner.nextLine();
-
-            // Vérifier que la longueur de la ligne correspond au nombre de colonnes
-            if (row.length() != m) {
-                System.out.println(
-                        "La longueur de la ligne ne correspond pas au nombre de colonnes. Veuillez réessayer.");
-                i--; // Répéter la saisie de cette ligne
-                continue;
+                labyrinthe = new char[n][m];
+                System.out.println("Enter the maze (use '#' for walls, 'D' for the prisoner, 'S' for the exit): ");
+                for (int i = 0; i < n; i++) {
+                    String row = scanner.nextLine();
+                    labyrinthe[i] = row.toCharArray();
+                }
+            } else {
+                System.out.println("Enter the path to the maze file: ");
+                String filePath = scanner.nextLine();
+                labyrinthe = fileManager.readMazeFromFile(filePath);
+                n = labyrinthe.length;
+                m = labyrinthe[0].length;
             }
 
-            // Convertir la ligne en un tableau de caractères
-            labyrinthe[i] = row.toCharArray();
-        }
+            Labyrinthe lab = new Labyrinthe(n, m, labyrinthe);
+            List<List<String>> solutions = lab.resoudre();
 
-        // Créer une instance de la classe Labyrinthe
-        Labyrinthe lab = new Labyrinthe(n, m, labyrinthe);
+            System.out.println("Enter the path to the output file: ");
+            String outputPath = scanner.nextLine();
+            fileManager.writeSolutionToFile(solutions, outputPath);
 
-        // Résoudre le labyrinthe
-        List<List<String>> solutions = lab.resoudre();
-
-        // Afficher la solution
-        if (solutions.isEmpty()) {
-            System.out.println("Aucune solution trouvée.");
-        } else {
-            System.out.println("Solution trouvée :");
-            for (List<String> etape : solutions) {
-                System.out.println(etape);
+            if (solutions.isEmpty()) {
+                System.out.println("Aucune solution trouvée.");
+            } else {
+                System.out.println("Solution trouvée :");
+                for (List<String> etape : solutions) {
+                    System.out.println(etape);
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            scanner.close();
         }
-    }
-    /*
-     * private static void runTests() {
-     * // Exécutez vos tests ici
-     * org.junit.runner.JUnitCore.main("Labyrinthe.LabyrintheTest");
-     * }
-     */
+    } /*
+       * private static void runTests() {
+       * // Exécutez vos tests ici
+       * org.junit.runner.JUnitCore.main("Labyrinthe.LabyrintheTest");
+       * }
+       */
 }
