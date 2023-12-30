@@ -23,19 +23,18 @@ public class Labyrinthe {
 
         // Construction du graphe d'états
         Map<String, Etat> etats = new HashMap<>();
-        Etat initial = new Etat(0, 0, 0, null);
-        etats.put(initial.toString(), initial);
-
-        Etat sortie = null; // Ajout d'une référence à l'état de sortie
+        Etat initial = null; // Initialize initial to null
+        Etat sortie = null; // Initialize sortie to null
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 char c = labyrinthe[i][j];
                 if (c == PRISONNIER) {
                     initial = new Etat(i, j, 0, null);
+                    etats.put(initial.toString(), initial); // Add the initial state to the map
                 } else if (c == SORTIE) {
                     sortie = new Etat(i, j, 0, null);
-                    etats.put(sortie.toString(), sortie);
+                    etats.put(sortie.toString(), sortie); // Add the sortie state to the map
                 }
             }
         }
@@ -43,17 +42,18 @@ public class Labyrinthe {
         Heuristique heuristique1 = new HeuristiqueDistance(sortie);
         Heuristique heuristique2 = new HeuristiqueFeu(labyrinthe, sortie);
 
-        AStar astar1 = new AStar(etats, heuristique1, heuristique2, labyrinthe, sortie);
-        System.out.println("Solving with heuristic 1..."); // Log before solving with heuristic 1
+        AStar astar1 = new AStar(etats, heuristique1, heuristique2, labyrinthe, initial, sortie);
+        System.out.println("Solving with heuristic 1 (HeuristiqueDistance)..."); // Log before solving with heuristic 1
         Etat solution_etat1 = astar1.resoudre(true);
         List<String> solution1 = buildSolution(solution_etat1);
-        System.out.println("Solution with heuristic 1: " + solution1); // Log solution with heuristic 1
+        System.out.println("Solution with heuristic 1 (HeuristiqueDistance): " + solution1); // Log solution with
+                                                                                             // heuristic 1
 
-        AStar astar2 = new AStar(etats, heuristique1, heuristique2, labyrinthe, sortie);
-        System.out.println("Solving with heuristic 2..."); // Log before solving with heuristic 2
+        AStar astar2 = new AStar(etats, heuristique1, heuristique2, labyrinthe, initial, sortie);
+        System.out.println("Solving with heuristic 2 (HeuristiqueFeu)..."); // Log before solving with heuristic 2
         Etat solution_etat2 = astar2.resoudre(false);
         List<String> solution2 = buildSolution(solution_etat2);
-        System.out.println("Solution with heuristic 2: " + solution2); // Log solution with heuristic 2
+        System.out.println("Solution with heuristic 2 (HeuristiqueFeu): " + solution2); // Log solution with heuristic 2
 
         solutions.add(solution1);
         solutions.add(solution2);

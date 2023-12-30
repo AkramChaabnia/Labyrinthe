@@ -6,9 +6,10 @@ import java.util.PriorityQueue;
 public class AStar {
 
     private Map<String, Etat> etats;
-    private Heuristique heuristique1; // Pour la première heuristique
-    private Heuristique heuristique2; // Pour la deuxième heuristique
+    private Heuristique heuristique1;
+    private Heuristique heuristique2;
     private char[][] labyrinthe;
+    private Etat initial;
     private Etat sortie;
 
     public AStar(Map<String, Etat> etats, Heuristique heuristique1, Heuristique heuristique2, char[][] labyrinthe,
@@ -20,9 +21,19 @@ public class AStar {
         this.sortie = sortie;
     }
 
+    public AStar(Map<String, Etat> etats, Heuristique heuristique1, Heuristique heuristique2, char[][] labyrinthe,
+            Etat initial, Etat sortie) {
+        this.etats = etats;
+        this.heuristique1 = heuristique1;
+        this.heuristique2 = heuristique2;
+        this.labyrinthe = labyrinthe;
+        this.initial = initial;
+        this.sortie = sortie;
+    }
+
     public Etat resoudre(boolean utiliserHeuristique1) {
         PriorityQueue<Etat> file = new PriorityQueue<>((etat1, etat2) -> Integer.compare(etat1.cout, etat2.cout));
-        file.add(etats.get(sortie.toString())); // Add the exit state to the queue
+        file.add(initial); // Add the initial state to the queue
 
         while (!file.isEmpty()) {
             Etat etat = file.poll();
