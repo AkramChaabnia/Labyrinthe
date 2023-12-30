@@ -1,0 +1,100 @@
+<p align="center">
+  <a href="" rel="noopener">
+    <img src="" alt="Project logo">
+  </a>
+</p>
+<h3 align="center">Maze Solver</h3>
+
+<div align="center">
+
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues](https://img.shields.io/github/issues/AkramChaabnia/MazeSolver.svg)](https://github.com/AkramChaabnia/MazeSolver/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/AkramChaabnia/MazeSolver.svg)](https://github.com/AkramChaabnia/MazeSolver/pulls)
+[![University](https://img.shields.io/badge/University-Paris%20Cité%20Université-%23A6192E)](https://u-paris.fr)
+
+</div>
+
+---
+
+<p align="center"> Maze Solver is a Java project that uses the A* algorithm to find a path from a start point to an exit point in a 2D maze while avoiding fire cells. It was developed as part of the advanced algorithms module at Université de Paris Cité.
+  <br> 
+</p>
+
+## 📝 Table of Contents
+
+- [About](#about)
+- [Code Structure](#code_structure)
+- [Getting Started](#getting_started)
+- [Usage](#usage)
+- [Built Using](#built_using)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
+
+## 🧐 About <a name = "about"></a>
+
+The goal of this project is to implement the A\* algorithm for finding a path in a 2D maze. The project includes a maze structure, methods for running the algorithm and displaying the maze, and different mazes encoded in text files.
+
+## 🚀 Code Structure <a name = "code_structure"></a>
+
+The project consists of the following files:
+
+- `Labyrinthe.java`: Represents the 2D maze.
+- `Etat.java`: Represents a state in the maze, including the position and the time step.
+- `Heuristique.java`: An interface for heuristic functions.
+- `HeuristiqueDistance.java`: A heuristic function that uses the Euclidean distance to the exit.
+- `HeuristiqueFeu.java`: A heuristic function that takes into account the distance to the nearest fire cell.
+- `AStar.java`: Implements the A\* algorithm for finding a path in the maze.
+- `FileManager.java`: Includes methods for reading the maze from a file and writing the solution to a file.
+- `Main.java`: The main class that runs the program.
+- `maze.txt`: A text file that encodes the maze. The maze is represented by different symbols for the walls, the start point, the exit point, the fire cells, and the free cells.
+- `result.txt`: A text file that contains the solution. The solution is represented by the initial state of the maze and the maze with the path marked by asterisks (`*`), if a solution is found.
+
+## 📄 Maze File Format <a name="map_format"></a>
+
+The maze is encoded in a text file with the following symbols:
+
+- `.`: Free cell
+- `#`: Wall
+- `F`: Fire cell
+- `D`: Start point
+- `S`: Exit point
+
+The start point is the initial position of the prisoner when the fire was lit. In addition, the following constraints are imposed in the model:
+
+- The fire spreads in the four cardinal directions (N, S, E, W) at a speed of one cell per minute.
+- The prisoner can also move in these four directions at the same speed.
+- Neither the fire nor the prisoner can cross a wall.
+- If the prisoner and the fire occupy the same position at any time, the prisoner dies instantly.
+
+You can define your own mazes by creating a text file that follows this format.
+
+## 🏁 Getting Started <a name = "getting_started"></a>
+
+To compile and execute the project:
+
+1. Clone the repository or download the project files.
+2. Set up the JavaFX environment in your IDE.
+3. Run the `Main` class.
+
+## 🎈 Usage <a name="usage"></a>
+
+To use the project, you can follow these steps:
+
+- Choose or create a maze file that follows the format described in [maze map format](#map_format).
+- In the `main` method of the `Main` class, specify the name of the maze file.
+- Run the `Main` class and observe the output. The output will show the maze, the path found, and the performance metrics of the algorithm.
+- You can change the maze file and run the project again to compare the results.
+
+## ⛏️ Built Using <a name = "built_using"></a>
+
+- [Java](https://www.java.com/) - Programming Language
+- [JavaFX](https://openjfx.io/) - GUI Library
+
+## ✍️ Authors <a name = "authors"></a>
+
+- [@AkramChaabnia](https://github.com/AkramChaabnia) - Idea & Initial work
+
+## 🎉 Acknowledgements <a name = "acknowledgement"></a>
+
+- This project was inspired by the advanced algorithms module at Université de Paris Cité.
+- Thanks to the Phind assistant for helping with the code and the README file.
