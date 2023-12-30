@@ -24,9 +24,7 @@ public class HeuristiqueFeu implements Heuristique {
             for (int j = 0; j < m; j++) {
                 if (labyrinthe[i][j] == FEU) {
                     int distanceTemporaire = Math.abs(i - etat.x) + Math.abs(j - etat.y);
-                    if (distanceTemporaire < distanceFeu || distanceFeu == 0) {
-                        distanceFeu = distanceTemporaire;
-                    }
+                    distanceFeu += 1 / (double) distanceTemporaire;
                 }
             }
         }
