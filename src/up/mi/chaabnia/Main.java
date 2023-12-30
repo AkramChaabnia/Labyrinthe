@@ -41,9 +41,31 @@ public class Main {
             Labyrinthe lab = new Labyrinthe(n, m, labyrinthe);
             List<List<String>> solutions = lab.resoudre();
 
-            System.out.println("Enter the path to the output file: ");
-            String outputPath = scanner.nextLine();
-            fileManager.writeSolutionToFile(solutions, outputPath);
+            System.out.println(
+                    "Which solution do you want to see? (1 - HeuristiqueDistance, 2 - HeuristiqueFeu, 3 - Both)");
+            int solutionChoice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
+
+            if (solutionChoice == 1) {
+                System.out.println("Solution with heuristic 1 (HeuristiqueDistance): " + solutions.get(0));
+            } else if (solutionChoice == 2) {
+                System.out.println("Solution with heuristic 2 (HeuristiqueFeu): " + solutions.get(1));
+            } else {
+                System.out.println("Solution with heuristic 1 (HeuristiqueDistance): " + solutions.get(0));
+                System.out.println("Solution with heuristic 2 (HeuristiqueFeu): " + solutions.get(1));
+            }
+
+            System.out.println("Do you want to write the solution to an output file? (1 - Yes, 2 - No)");
+            int outputChoice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
+
+            if (outputChoice == 1) {
+                System.out.println("Enter the path to the output file: ");
+                String outputPath = scanner.nextLine();
+                fileManager.writeSolutionToFile(solutions, outputPath);
+            } else {
+                System.out.println("Solution: " + solutions);
+            }
 
             if (solutions.isEmpty()) {
                 System.out.println("Aucune solution trouvée.");
@@ -58,10 +80,11 @@ public class Main {
         } finally {
             scanner.close();
         }
-    } /*
-       * private static void runTests() {
-       * // Exécutez vos tests ici
-       * org.junit.runner.JUnitCore.main("Labyrinthe.LabyrintheTest");
-       * }
-       */
+    }
+    /*
+     * private static void runTests() {
+     * // Exécutez vos tests ici
+     * org.junit.runner.JUnitCore.main("Labyrinthe.LabyrintheTest");
+     * }
+     */
 }
