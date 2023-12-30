@@ -1,82 +1,86 @@
 package up.mi.chaabnia;
 
-
-import java.util.LinkedList;
-import java.util.ArrayList;
+import java.util.*;
 
 public class WeightedGraph {
+    static class Vertex implements Comparable<Vertex> {
+        double indivTime;
+        double timeFromSource;
+        double heuristic;
+        Vertex prev;
+        LinkedList<Edge> adjacencyList;
+        int num;
+        int firePosition;
 
+        @Override
+        public int compareTo(Vertex other) {
+            return Integer.compare(this.num, other.num);
+        }
 
-    
-    // Classe interne pour représenter une arête pondérée
+        public Vertex(int num) {
+            this.indivTime = Double.POSITIVE_INFINITY;
+            this.timeFromSource = Double.POSITIVE_INFINITY;
+            this.heuristic = -1;
+            this.prev = null;
+            this.adjacencyList = new LinkedList<>();
+            this.num = num;
+            this.firePosition = -1;
+        }
+
+        public void addNeighbor(Edge e) {
+            this.adjacencyList.addFirst(e);
+        }
+    }
+
     static class Edge {
-        int source; // Sommet source
-        int destination; // Sommet destination
-        double weight; // Poids de l'arête
+        Vertex source;
+        Vertex destination;
+        double weight;
 
-        // Constructeur de l'arête
-        public Edge(int source, int destination, double weight) {
+        public Edge(Vertex destination, double weight) {
+            this.destination = destination;
+            this.weight = weight;
+        }
+
+        public Edge(Vertex source, Vertex destination, double weight) {
             this.source = source;
             this.destination = destination;
             this.weight = weight;
         }
     }
 
-    // Classe interne pour représenter un sommet du graphe pondéré
-    static class Vertex {
-        double indivTime; // Temps individuel du sommet
-        double timeFromSource; // Temps depuis la source jusqu'à ce sommet
-        double heuristic; // Heuristique du sommet
-        Vertex prev; // Sommet précédent dans le chemin optimal
-        LinkedList<Edge> adjacencylist; // Liste des arêtes adjacentes au sommet
-        int num; // Numéro du sommet
-        char etiquette; // Étiquette du sommet
-        int i; // Coordonnée i du sommet
-        int j; // Coordonnée j du sommet
+    public static void main(String[] args) {
+        int vertices = 6;
+        List<Vertex> vertexList = new ArrayList<>();
 
-        // Constructeur du sommet
-        public Vertex(int num, char etiquette, int i, int j) {
-            this.indivTime = Double.POSITIVE_INFINITY;
-            this.timeFromSource = Double.POSITIVE_INFINITY;
-            this.heuristic = -1;
-            this.prev = null;
-            this.adjacencylist = new LinkedList<Edge>();
-            this.num = num;
-            this.etiquette = etiquette;
-            this.i = i;
-            this.j = j;
+        for (int i = 0; i < vertices; i++) {
+            vertexList.add(new Vertex(i));
         }
 
-        // Méthode pour ajouter un voisin (arête) au sommet
-        public void addNeighbor(Edge e) {
-            this.adjacencylist.addFirst(e);
+        WeightedGraph weightedGraph = new WeightedGraph();
+        for (int i = 0; i < vertices; i++) {
+            weightedGraph.addVertex(vertexList.get(i), 10); // Adjust the parameters as needed
         }
+
+        weightedGraph.addEdge(vertexList.get(0), vertexList.get(1), 4);
+        weightedGraph.addEdge(vertexList.get(0), vertexList.get(2), 3);
+        weightedGraph.addEdge(vertexList.get(1), vertexList.get(3), 2);
+        weightedGraph.addEdge(vertexList.get(1), vertexList.get(2), 5);
+        weightedGraph.addEdge(vertexList.get(2), vertexList.get(3), 7);
+        weightedGraph.addEdge(vertexList.get(3), vertexList.get(4), 2);
+        weightedGraph.addEdge(vertexList.get(4), vertexList.get(0), 4);
+        weightedGraph.addEdge(vertexList.get(4), vertexList.get(1), 4);
+        weightedGraph.addEdge(vertexList.get(4), vertexList.get(5), 6);
+
+        // Rest of your code...
     }
 
-    // Classe principale représentant le graphe pondéré
-    static class Graph {
+    public void addVertex(Vertex vertex, double indivTime) {
+        vertex.indivTime = indivTime;
+    }
 
-        ArrayList<Vertex> vertexList; // Liste des sommets du graphe
-        int num_v = 0; // Nombre de sommets dans le graphe
-
-        // Constructeur du graphe
-        Graph() {
-            vertexList = new ArrayList<Vertex>();
-        }
-
-        // Méthode pour ajouter un sommet au graphe
-        public void addVertex(char etiquette, double indivTime, int i, int j) {
-            Vertex v = new Vertex(num_v, etiquette, i, j);
-            v.indivTime = indivTime;
-            vertexList.add(v);
-            num_v = num_v + 1;
-        }
-
-        // Méthode pour ajouter une arête pondérée entre deux sommets
-        public void addEdge(int source, int destination, double weight) {
-            Edge edge = new Edge(source, destination, weight);
-            vertexList.get(source).addNeighbor(edge);
-        }
-
+    public void addEdge(Vertex source, Vertex destination, double weight) {
+        Edge edge = new Edge(source, destination, weight);
+        source.addNeighbor(edge);
     }
 }
