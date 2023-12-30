@@ -30,14 +30,62 @@ public class FileManager {
     return labyrinthe;
   }
 
-  public void writeSolutionToFile(List<List<String>> solutions, String filePath) throws IOException {
+  public void writeSolutionToFile(char[][] labyrinthe, List<List<String>> solutions, String filePath)
+      throws IOException {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+      writer.write("Maze:\n");
+      for (int i = 0; i < labyrinthe.length; i++) {
+        for (int j = 0; j < labyrinthe[0].length; j++) {
+          switch (labyrinthe[i][j]) {
+            case '#':
+              writer.write('█'); // wall
+              break;
+            case 'D':
+              writer.write('S'); // start point
+              break;
+            case 'S':
+              writer.write('E'); // exit point
+              break;
+            case 'F':
+              writer.write('F'); // fire cell
+              break;
+            default:
+              writer.write(' '); // empty cell
+              break;
+          }
+        }
+        writer.write("\n");
+      }
+
       if (solutions.isEmpty()) {
         writer.write("Aucune solution trouvée.");
       } else {
         writer.write("Solution trouvée :\n");
-        writer.write("Solution with heuristic 1 (HeuristiqueDistance): " + solutions.get(0) + "\n");
-        writer.write("Solution with heuristic 2 (HeuristiqueFeu): " + solutions.get(1) + "\n");
+
+        // Create a copy of the maze
+        char[][] mazeCopy = new char[labyrinthe.length][labyrinthe[0].length];
+        for (int i = 0; i < labyrinthe.length; i++) {
+          mazeCopy[i] = labyrinthe[i].clone();
+        }
+
+        // Mark the path in the copy of the maze
+        for (List<String> solution : solutions) {
+          for (String state : solution) {
+            String[] parts = state.replaceAll("[()]", "").split(",");
+            int x = Integer.parseInt(parts[0]);
+            int y = Integer.parseInt(parts[1]);
+            mazeCopy[x][y] = '*'; // path
+          }
+
+          // Write the maze with the path to the file
+          writer.write("Maze with path:\n");
+          for (int i = 0; i < mazeCopy.length; i++) {
+            for (int j = 0; j < mazeCopy[0].length; j++) {
+              writer.write(mazeCopy[i][j]);
+            }
+            writer.write("\n");
+          }
+        }
       }
     }
   }
