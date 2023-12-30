@@ -43,13 +43,17 @@ public class Labyrinthe {
         Heuristique heuristique1 = new HeuristiqueDistance(sortie);
         Heuristique heuristique2 = new HeuristiqueFeu(labyrinthe, sortie);
 
-        AStar astar1 = new AStar(etats, heuristique1, heuristique2, labyrinthe, initial);
-        Etat solution_etat1 = astar1.resoudre(true); // Utilise la première heuristique
+        AStar astar1 = new AStar(etats, heuristique1, heuristique2, labyrinthe, sortie);
+        System.out.println("Solving with heuristic 1..."); // Log before solving with heuristic 1
+        Etat solution_etat1 = astar1.resoudre(true);
         List<String> solution1 = buildSolution(solution_etat1);
+        System.out.println("Solution with heuristic 1: " + solution1); // Log solution with heuristic 1
 
-        AStar astar2 = new AStar(etats, heuristique1, heuristique2, labyrinthe, initial);
-        Etat solution_etat2 = astar2.resoudre(false); // Utilise la deuxième heuristique
+        AStar astar2 = new AStar(etats, heuristique1, heuristique2, labyrinthe, sortie);
+        System.out.println("Solving with heuristic 2..."); // Log before solving with heuristic 2
+        Etat solution_etat2 = astar2.resoudre(false);
         List<String> solution2 = buildSolution(solution_etat2);
+        System.out.println("Solution with heuristic 2: " + solution2); // Log solution with heuristic 2
 
         solutions.add(solution1);
         solutions.add(solution2);
