@@ -24,10 +24,18 @@ public class HeuristiqueFeu implements Heuristique {
             for (int j = 0; j < m; j++) {
                 if (labyrinthe[i][j] == FEU) {
                     int distanceTemporaire = Math.abs(i - etat.x) + Math.abs(j - etat.y);
-                    distanceFeu += 1 / (double) distanceTemporaire;
+                    if (distanceTemporaire < distanceFeu || distanceFeu == 0) {
+                        distanceFeu = distanceTemporaire;
+                    }
                 }
             }
         }
+
+        // Log the distances
+        System.out.println("Evaluating state: " + etat);
+        System.out.println("Euclidean distance to exit: " + distanceEuclidienne);
+        System.out.println("Fire distance: " + distanceFeu);
+
         return distanceEuclidienne + distanceFeu;
     }
 }
