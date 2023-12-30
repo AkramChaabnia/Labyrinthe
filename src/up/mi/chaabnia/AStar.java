@@ -26,8 +26,10 @@ public class AStar {
 
         while (!file.isEmpty()) {
             Etat etat = file.poll();
+            System.out.println("Current state: " + etat); // Log current state
 
             if (etat.x == sortie.x && etat.y == sortie.y) {
+                System.out.println("Exit found: " + etat); // Log when exit is found
                 return etat;
             }
 
@@ -39,6 +41,7 @@ public class AStar {
                 int m = labyrinthe[0].length;
 
                 if (x >= 0 && x < n && y >= 0 && y < m && labyrinthe[x][y] != Labyrinthe.MUR) {
+
                     Etat nouvel_etat = new Etat(x, y, etat.temps + 1, direction);
                     nouvel_etat.direction = direction; // Ajout de la direction
                     nouvel_etat.pere = etat;
@@ -51,10 +54,13 @@ public class AStar {
 
                     etats.put(nouvel_etat.toString(), nouvel_etat);
                     file.add(nouvel_etat);
+                    System.out.println("Adding new state to queue: " + nouvel_etat); // Log when a new state is added to
+                                                                                     // the queue
+
                 }
             }
         }
-
+        System.out.println("No solution found"); // Log when no solution is found
         return null;
     }
 }
