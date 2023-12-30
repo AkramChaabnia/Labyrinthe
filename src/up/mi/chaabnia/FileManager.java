@@ -36,10 +36,8 @@ public class FileManager {
         writer.write("Aucune solution trouvée.");
       } else {
         writer.write("Solution trouvée :\n");
-        for (List<String> etape : solutions) {
-          writer.write(String.join(", ", etape));
-          writer.newLine();
-        }
+        writer.write("Solution with heuristic 1 (HeuristiqueDistance): " + solutions.get(0) + "\n");
+        writer.write("Solution with heuristic 2 (HeuristiqueFeu): " + solutions.get(1) + "\n");
       }
     }
   }
